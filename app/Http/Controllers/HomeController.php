@@ -7,6 +7,6 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function about() {
-        return "Đây là trang about của tôi";
+        return view('pages.about');
     }
 }

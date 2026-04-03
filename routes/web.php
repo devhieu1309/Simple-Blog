@@ -1,13 +1,9 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\Admin;
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -21,5 +17,30 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/about', [HomeController::class, 'about']);
-Route::resource('posts', PostController::class);
+Route::get('/', function () {
+    return view('pages.home');
+})->name('home');
+
+Route::get('/about', function () {
+    return view('pages.about');
+})->name('about');
+
+Route::get('post/{id}', [PostController::class, 'show'])->name('post.show');
+Route::get('post', [PostController::class, 'index'])->name('post.index');
+
+// Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+//     Route::view('/', 'dashboard')->name('dashboard');
+//     Route::resource('categories', Admin\CategoryController::class);
+//     Route::resource('tags', Admin\TagController::class);
+//     Route::resource('posts', Admin\PostController::class);
+// });
+
+
+Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], function(){
+    Route::resource('posts', Admin\PostController::class);
+    Route::resource('categories', Admin\CategoryController::class);
+    Route::resource('tags', Admin\TagController::class);
+});
+
+
+

@@ -14,24 +14,25 @@
     </x-slot>
 
     <div class="py-12 bg-slate-50 dark:bg-slate-900">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
-                <form action="{{ route('admin.categories.update', 1) }}" method="POST" class="space-y-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-center">
+            <div class="w-full max-w-[600px]">
+                <form action="{{ route('admin.categories.update', $category->id) }}" method="POST" class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 space-y-6">
                     @csrf
                     @method('PUT')
-                    <!-- Name -->
+                    
+                    <!-- Category Name -->
                     <div>
                         <label for="name" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Tên danh mục</label>
-                        <input type="text" name="name" id="name" value="Lập trình" class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 focus:border-indigo-500 focus:ring-indigo-500 transition-colors" required>
+                        <input type="text" name="name" id="name" value="{{ old('name', $category->name) }}" class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 focus:border-blue-500 focus:ring-blue-500 transition-colors">
                     </div>
 
                     <!-- Action Button -->
-                    <div class="flex justify-end">
-                        <button type="submit" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-base font-bold shadow-lg transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold shadow-md transition-all duration-200 transform hover:-translate-y-0.5 active:scale-95">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
-                            Cập nhật danh mục
+                            Lưu danh mục
                         </button>
                     </div>
                 </form>

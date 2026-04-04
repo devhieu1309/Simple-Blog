@@ -4,69 +4,56 @@
             <h2 class="font-semibold text-xl text-slate-800 dark:text-slate-200 leading-tight">
                 {{ __('Quản lý Danh mục') }}
             </h2>
-            <a href="{{ route('admin.categories.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-widest rounded-lg shadow-md transition-all duration-200">
+            <a href="{{ route('admin.categories.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-widest rounded-lg shadow-md transition-all duration-200">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                {{ __('Thêm danh mục mới') }}
+                {{ __('Tạo danh mục mới') }}
             </a>
         </div>
     </x-slot>
+
 
     <div class="py-12 bg-slate-50 dark:bg-slate-900">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-sm sm:rounded-xl border border-slate-200 dark:border-slate-700">
                 <div class="p-0 text-slate-900 dark:text-slate-100">
                     <div class="relative overflow-x-auto">
+                        @if(session('success'))
+                        <div class="bg-green-200 p-4 rounded-md mb-4">
+                            {{ session('success') }}
+                        </div>
+                        @endif
                         <table class="w-full text-sm text-left rtl:text-right text-slate-500 dark:text-slate-400">
                             <thead class="text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-bold">ID</th>
                                     <th scope="col" class="px-6 py-4 font-bold">Tên danh mục</th>
-                                    <th scope="col" class="px-6 py-4 font-bold">Số bài viết</th>
+                                    <th scope="col" class="px-6 py-4 font-bold text-center">Số lượng bài viết</th>
                                     <th scope="col" class="px-6 py-4 font-bold text-right">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                                @foreach($categories as $category)
                                 <tr class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                                    <td class="px-6 py-4 font-medium text-slate-400">#1</td>
+                                    <td class="px-6 py-4 font-medium text-slate-400">{{ $category->id }}</td>
                                     <th scope="row" class="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
-                                        Lập trình
+                                        {{ $category->name }}
                                     </th>
-                                    <td class="px-6 py-4">
-                                        <span class="px-2 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded text-xs font-medium border border-indigo-100 dark:border-indigo-800/50">12</span>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="px-2.5 py-0.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-full text-xs font-bold">12</span>
                                     </td>
                                     <td class="px-6 py-4 text-right space-x-3">
-                                        <a href="{{ route('admin.categories.edit', 1) }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
-                                        <button class="font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300 transition-colors">Xóa</button>
+                                        <a href="{{ route('admin.categories.edit', $category->id) }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
+                                        
+                                        <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" class="inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button onclick="return confirm('Bạn có chắc muốn xóa danh mục này không?')" type="submit"  class="font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300 transition-colors">Xóa</button>
+                                        </form>
                                     </td>
                                 </tr>
-                                <tr class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                                    <td class="px-6 py-4 font-medium text-slate-400">#2</td>
-                                    <th scope="row" class="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
-                                        Tin tức
-                                    </th>
-                                    <td class="px-6 py-4">
-                                        <span class="px-2 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded text-xs font-medium border border-emerald-100 dark:border-emerald-800/50">8</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right space-x-3">
-                                        <a href="{{ route('admin.categories.edit', 2) }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
-                                        <button class="font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300 transition-colors">Xóa</button>
-                                    </td>
-                                </tr>
-                                <tr class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                                    <td class="px-6 py-4 font-medium text-slate-400">#3</td>
-                                    <th scope="row" class="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
-                                        Công nghệ
-                                    </th>
-                                    <td class="px-6 py-4">
-                                        <span class="px-2 py-1 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded text-xs font-medium border border-amber-100 dark:border-amber-800/50">5</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right space-x-3">
-                                        <a href="{{ route('admin.categories.edit', 3) }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
-                                        <button class="font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300 transition-colors">Xóa</button>
-                                    </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

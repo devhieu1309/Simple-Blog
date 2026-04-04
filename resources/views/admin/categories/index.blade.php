@@ -57,8 +57,12 @@
                             </tbody>
                         </table>
                     </div>
+
                     <!-- Pagination Footer -->
-                    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-700/30 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                     <div class="px-6 py-4">
+                        {{ $categories->links() }}
+                     </div>
+                    <!-- <div class="px-6 py-4 bg-slate-50 dark:bg-slate-700/30 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
                         <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">
                             Hiển thị từ <span class="font-bold text-slate-700 dark:text-slate-200">1</span> đến <span class="font-bold text-slate-700 dark:text-slate-200">3</span> trong <span class="font-bold text-slate-700 dark:text-slate-200">10</span> danh mục
                         </div>
@@ -84,7 +88,7 @@
                                 </svg>
                             </a>
                         </nav>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

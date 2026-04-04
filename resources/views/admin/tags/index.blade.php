@@ -18,6 +18,11 @@
             <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-sm sm:rounded-xl border border-slate-200 dark:border-slate-700">
                 <div class="p-0 text-slate-900 dark:text-slate-100">
                     <div class="relative overflow-x-auto">
+                        @if(session('success'))
+                        <div class="bg-green-200 p-4 rounded-md mb-4">
+                            {{ session('success') }}
+                        </div>
+                        @endif
                         <table class="w-full text-sm text-left rtl:text-right text-slate-500 dark:text-slate-400">
                             <thead class="text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
                                 <tr>
@@ -28,37 +33,34 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                                @foreach($tags as $tag)
                                 <tr class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                                    <td class="px-6 py-4 font-medium text-slate-400">#1</td>
+                                    <td class="px-6 py-4 font-medium text-slate-400">{{ $tag->id }}</td>
                                     <th scope="row" class="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
-                                        #laravel
+                                        {{ $tag->name }}
                                     </th>
                                     <td class="px-6 py-4 text-center">
                                         <span class="px-2.5 py-0.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-full text-xs font-bold">25</span>
                                     </td>
                                     <td class="px-6 py-4 text-right space-x-3">
-                                        <a href="{{ route('admin.tags.edit', 1) }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
-                                        <button class="font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300 transition-colors">Xóa</button>
+                                        <a href="{{ route('admin.tags.edit', $tag->id) }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
+
+                                        <form class="inline-block" action="{{ route('admin.tags.destroy', $tag->id) }}" method="POST">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" onclick="return confirm('Bạn có chắc muốn tag này không?')" class="font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300 transition-colors">Xóa</button>
+                                        </form>
                                     </td>
                                 </tr>
-                                <tr class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                                    <td class="px-6 py-4 font-medium text-slate-400">#2</td>
-                                    <th scope="row" class="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
-                                        #php
-                                    </th>
-                                    <td class="px-6 py-4 text-center">
-                                        <span class="px-2.5 py-0.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-full text-xs font-bold">18</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right space-x-3">
-                                        <a href="#" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
-                                        <button class="font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300 transition-colors">Xóa</button>
-                                    </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                     <!-- Pagination Footer -->
-                    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-700/30 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                     <div class="px-6 py-4">
+                        {{ $tags->links() }}
+                     </div>
+                    <!-- <div class="px-6 py-4 bg-slate-50 dark:bg-slate-700/30 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
                         <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">
                             Hiển thị từ <span class="font-bold text-slate-700 dark:text-slate-200">1</span> đến <span class="font-bold text-slate-700 dark:text-slate-200">2</span> trong <span class="font-bold text-slate-700 dark:text-slate-200">50</span> thẻ
                         </div>
@@ -84,7 +86,7 @@
                                 </svg>
                             </a>
                         </nav>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

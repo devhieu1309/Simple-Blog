@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTagFormRequest;
+use App\Http\Requests\UpdateTagFormRequest;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -12,7 +15,11 @@ class TagController extends Controller
      */
     public function index()
     {
-        return view('admin.tags.index');
+        $tags = Tag::paginate(8);
+        $data = [
+            'tags' => $tags
+        ];
+        return view('admin.tags.index', $data);
     }
 
     /**
@@ -26,9 +33,11 @@ class TagController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTagFormRequest $request)
     {
-        //
+        $tag = $request->all();
+        Tag::create($tag);
+        return redirect()->route('admin.tags.index')->with('success', 'Thêm thẻ mới thành công.');
     }
 
     /**
@@ -44,15 +53,22 @@ class TagController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admin.tags.edit');
+        $tag = Tag::find($id);
+        $data = [
+            'tag' => $tag
+        ];
+        return view('admin.tags.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateTagFormRequest $request, string $id)
     {
-        //
+        $data = $request->all();
+        $tag = Tag::find($id);
+        $tag->update($data);
+        return redirect()->route('admin.tags.index')->with('success', 'Cập nhật thẻ thành công.');
     }
 
     /**
@@ -60,6 +76,8 @@ class TagController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $tag = Tag::find($id);
+        $tag->delete();
+        return redirect()->route('admin.tags.index')->with('success', 'Xóa thẻ thành công.');
     }
 }

@@ -16,12 +16,15 @@
     <div class="py-12 bg-slate-50 dark:bg-slate-900">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-center">
             <div class="w-full max-w-[600px]">
-                <form action="#" method="POST" class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 space-y-6">
+                <form action="{{ route('admin.tags.store') }}" method="POST" class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 space-y-6">
                     @csrf
                     <!-- Tag Name -->
                     <div>
                         <label for="name" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Tên thẻ (Tag name)</label>
-                        <input type="text" name="name" id="name" class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 focus:border-blue-500 focus:ring-blue-500 transition-colors" placeholder="Ví dụ: #laravel, #php...">
+                        <input type="text" name="name" value="{{ old('name')  }}" id="name" class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 focus:border-blue-500 focus:ring-blue-500 transition-colors" placeholder="Ví dụ: #laravel, #php...">
+                        @error('name')
+                        <p class="text-red-500 dark:text-red-400 text-sm">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Action Button -->

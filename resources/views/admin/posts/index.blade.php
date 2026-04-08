@@ -18,9 +18,15 @@
             <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-sm sm:rounded-xl border border-slate-200 dark:border-slate-700">
                 <div class="p-0 text-slate-900 dark:text-slate-100">
                     <div class="relative overflow-x-auto">
+                        @if(session('success'))
+                        <div class="bg-green-200 p-4 rounded-md mb-4">
+                            {{ session('success') }}
+                        </div>
+                        @endif
                         <table class="w-full text-sm text-left rtl:text-right text-slate-500 dark:text-slate-400">
                             <thead class="text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
                                 <tr>
+                                    <th scope="col" class="px-6 py-4 font-bold">ID</th>
                                     <th scope="col" class="px-6 py-4 font-bold">Name</th>
                                     <th scope="col" class="px-6 py-4 font-bold">Author</th>
                                     <th scope="col" class="px-6 py-4 font-bold">Category</th>
@@ -30,92 +36,51 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                                @foreach($posts as $post)
                                 <tr class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                                     <th scope="row" class="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
-                                        Hướng dẫn học Laravel cho người mới bắt đầu
+                                        {{ $post->id }}
+                                    </th>
+                                    <th scope="row" class="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
+                                        {{ $post->title }}
                                     </th>
                                     <td class="px-6 py-4 flex items-center">
-                                        <div class="h-7 w-7 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 text-xs font-bold mr-2">MH</div>
-                                        Minh Hiếu
+                                        {{ $post->user->name }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <span class="px-2 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded text-xs font-medium border border-indigo-100 dark:border-indigo-800/50">Lập trình</span>
+                                        <span class="px-2 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded text-xs font-medium border border-indigo-100 dark:border-indigo-800/50">{{ $post->category->name }}</span>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex flex-wrap gap-1">
-                                            <span class="text-[10px] px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded border border-slate-200 dark:border-slate-600">#laravel</span>
-                                            <span class="text-[10px] px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded border border-slate-200 dark:border-slate-600">#php</span>
+                                            @foreach($post->tags as $tag)
+                                            <span class="text-[10px] px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded border border-slate-200 dark:border-slate-600">#{{ $tag->name }}</span>
+                                            @endforeach
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <div class="flex justify-center">
-                                            <img src="https://ui-avatars.com/api/?name=Laravel&background=F03A17&color=fff" alt="Post thumbnail" class="h-10 w-16 object-cover rounded border border-slate-200 dark:border-slate-700 shadow-sm">
+                                            <img src="{{ asset('storage/' . $post->image) }}" alt="Post thumbnail" class="h-4 w-5 object-cover rounded border border-slate-200 dark:border-slate-700 shadow-sm">
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 space-x-3">
-                                        <a href="{{ route('admin.posts.edit', 1) }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
-                                        <button class="font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300 transition-colors">Xóa</button>
+                                        <a href="{{ route('admin.posts.edit', $post->id) }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
+                                        <form class="inline-block" action="{{ route('admin.posts.destroy', $post->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Bạn có chắc muốn xóa bài viết này không?')" class="font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300 transition-colors">Xóa</button>
+                                        </form>
                                     </td>
                                 </tr>
-                                <tr class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                                    <th scope="row" class="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
-                                        10 tính năng mới trong PHP 8.3
-                                    </th>
-                                    <td class="px-6 py-4 flex items-center">
-                                        <div class="h-7 w-7 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 text-xs font-bold mr-2">MH</div>
-                                        Minh Hiếu
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span class="px-2 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded text-xs font-medium border border-emerald-100 dark:border-emerald-800/50">Tin tức</span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex flex-wrap gap-1">
-                                            <span class="text-[10px] px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded border border-slate-200 dark:border-slate-600">#php8</span>
-                                            <span class="text-[10px] px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded border border-slate-200 dark:border-slate-600">#backend</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="flex justify-center">
-                                            <img src="https://ui-avatars.com/api/?name=PHP&background=777BB4&color=fff" alt="Post thumbnail" class="h-10 w-16 object-cover rounded border border-slate-200 dark:border-slate-700 shadow-sm">
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 space-x-3">
-                                        <a href="#" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
-                                        <button class="font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300 transition-colors">Xóa</button>
-                                    </td>
-                                </tr>
-                                <tr class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                                    <th scope="row" class="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
-                                        Cách tối ưu hóa hiệu suất ứng dụng Web
-                                    </th>
-                                    <td class="px-6 py-4 flex items-center">
-                                        <div class="h-7 w-7 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 text-xs font-bold mr-2">MH</div>
-                                        Minh Hiếu
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span class="px-2 py-1 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded text-xs font-medium border border-amber-100 dark:border-amber-800/50">Công nghệ</span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex flex-wrap gap-1">
-                                            <span class="text-[10px] px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded border border-slate-200 dark:border-slate-600">#performance</span>
-                                            <span class="text-[10px] px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded border border-slate-200 dark:border-slate-600">#web</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="flex justify-center">
-                                            <img src="https://ui-avatars.com/api/?name=Web&background=00D1B2&color=fff" alt="Post thumbnail" class="h-10 w-16 object-cover rounded border border-slate-200 dark:border-slate-700 shadow-sm">
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 space-x-3">
-                                        <a href="#" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
-                                        <button class="font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-300 transition-colors">Xóa</button>
-                                    </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                     <!-- Pagination Footer -->
-                    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-700/30 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                     <div class="px-6 py-4">
+                        {{ $posts->onEachSide(1)->links() }}
+                    </div>
+                     </div>
+                    <!-- <div class="px-6 py-4 bg-slate-50 dark:bg-slate-700/30 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
                         <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">
                             Hiển thị từ <span class="font-bold text-slate-700 dark:text-slate-200">1</span> đến <span class="font-bold text-slate-700 dark:text-slate-200">3</span> trong <span class="font-bold text-slate-700 dark:text-slate-200">24</span> bài viết
                         </div>
@@ -141,7 +106,7 @@
                                 </svg>
                             </a>
                         </nav>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

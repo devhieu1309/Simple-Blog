@@ -15,7 +15,7 @@
 
     <div class="py-12 bg-slate-50 dark:bg-slate-900">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <form action="#" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 @csrf
                 <!-- Left Column: Main Content -->
                 <div class="lg:col-span-2 space-y-6">
@@ -24,34 +24,25 @@
                             <!-- Title -->
                             <div>
                                 <label for="title" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Tiêu đề bài viết</label>
-                                <input type="text" name="title" id="title" class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 focus:border-indigo-500 focus:ring-indigo-500 transition-colors" placeholder="Nhập tiêu đề hấp dẫn...">
+                                <input type="text" name="title" id="title" value="{{ old('title') }}" class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 focus:border-indigo-500 focus:ring-indigo-500 transition-colors" placeholder="Nhập tiêu đề hấp dẫn...">
+                                @error('title')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Content -->
                             <div>
                                 <label for="content" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Nội dung</label>
-                                <textarea name="content" id="content" rows="15" class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 focus:border-indigo-500 focus:ring-indigo-500 transition-colors" placeholder="Viết nội dung bài viết ở đây..."></textarea>
+                                <textarea name="content" id="content" rows="15" class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 focus:border-indigo-500 focus:ring-indigo-500 transition-colors" placeholder="Viết nội dung bài viết ở đây...">{{ old('content') }}</textarea>
+                                @error('content')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Sidebar Settings -->
                 <div class="space-y-6">
-                    <!-- Publish Box -->
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
-                        <h3 class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-4 flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                            </svg>
-                            Trạng thái & Đăng bài
-                        </h3>
-                        <div class="flex gap-2">
-                            <button type="button" class="flex-1 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">Lưu nháp</button>
-                            <button type="submit" class="flex-1 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold shadow-md transition-all">Đăng bài</button>
-                        </div>
-                    </div>
-
                     <!-- Category & Tags -->
                     <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
                         <div class="space-y-6">
@@ -60,9 +51,9 @@
                                 <label for="category_id" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Danh mục</label>
                                 <select name="category_id" id="category_id" class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 focus:border-indigo-500 focus:ring-indigo-500">
                                     <option value="">Chọn danh mục...</option>
-                                    <option value="1">Lập trình</option>
-                                    <option value="2">Tin tức</option>
-                                    <option value="3">Công nghệ</option>
+                                    @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -70,22 +61,12 @@
                             <div>
                                 <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Thẻ (Tags)</label>
                                 <div class="grid grid-cols-2 gap-2">
+                                    @foreach($tags as $tag)
                                     <label class="inline-flex items-center">
-                                        <input type="checkbox" name="tags[]" value="1" class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                                        <span class="ml-2 text-sm text-slate-600 dark:text-slate-400">Laravel</span>
+                                        <input type="checkbox" name="tags[]" value="{{ $tag->id }}" class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                                        <span class="ml-2 text-sm text-slate-600 dark:text-slate-400">{{ $tag->name }}</span>
                                     </label>
-                                    <label class="inline-flex items-center">
-                                        <input type="checkbox" name="tags[]" value="2" class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                                        <span class="ml-2 text-sm text-slate-600 dark:text-slate-400">PHP</span>
-                                    </label>
-                                    <label class="inline-flex items-center">
-                                        <input type="checkbox" name="tags[]" value="3" class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                                        <span class="ml-2 text-sm text-slate-600 dark:text-slate-400">Tailwind</span>
-                                    </label>
-                                    <label class="inline-flex items-center">
-                                        <input type="checkbox" name="tags[]" value="4" class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                                        <span class="ml-2 text-sm text-slate-600 dark:text-slate-400">VueJS</span>
-                                    </label>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -102,13 +83,23 @@
                                 <div class="flex text-sm text-slate-600 dark:text-slate-400">
                                     <label for="image" class="relative cursor-pointer bg-white dark:bg-slate-800 rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                                         <span>Tải ảnh lên</span>
-                                        <input id="image" name="image" type="file" class="sr-only">
+                                        <input id="image" name="image" value="{{ old('image') }}" type="file" class="sr-only">
                                     </label>
                                     <p class="pl-1">hoặc kéo thả</p>
                                 </div>
-                                <p class="text-xs text-slate-500">PNG, JPG, GIF up to 10MB</p>
+                                @error('image')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                                @enderror
+                                <p class="text-xs text-slate-500">PNG, JPG, GIF</p>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end">
+                        <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold shadow-md transition-all">
+                            Lưu bài viết
+                        </button>
                     </div>
                 </div>
             </form>

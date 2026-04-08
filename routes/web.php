@@ -4,6 +4,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin;
+use App\Models\Post;
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -18,7 +19,11 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get('/', function () {
-    return view('pages.home');
+    $posts = Post::latest()->limit(5)->get();
+    $data = [
+        'posts' => $posts
+    ];
+    return view('pages.home', $data);
 })->name('home');
 
 Route::get('/about', function () {

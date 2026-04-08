@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -11,7 +12,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('posts.index');
+        $posts = Post::latest()->simplePaginate(8);
+        $data = [
+            'posts' => $posts
+        ];
+        return view('posts.index', $data);
     }
 
     /**
@@ -19,6 +24,10 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        return view('posts.show');
+        $post = Post::find($id);
+        $data = [
+            'post' => $post
+        ];
+        return view('posts.show', $data);
     }
 }

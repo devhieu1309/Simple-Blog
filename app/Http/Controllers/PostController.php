@@ -12,7 +12,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->simplePaginate(8);
+        $posts = Post::with('category', 'tags')->latest()->simplePaginate(8);
         $data = [
             'posts' => $posts
         ];
@@ -24,7 +24,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::find($id);
+        $post = Post::with('category', 'tags', 'user')->findOrFail($id);
         $data = [
             'post' => $post
         ];

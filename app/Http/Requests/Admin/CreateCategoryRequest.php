@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCategoryFormRequest extends FormRequest
+class CreateCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +23,15 @@ class UpdateCategoryFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255',
+            'name' => ['required', 'string', 'max:255']
         ];
     }
 
-    public function messages() {
+    public function messages(){
         return [
-            'name.required' => 'Tên danh mục không được để trống.',
-            'name.max' => 'Tên danh mục không được vượt quá 255 ký tự.'
+            'name.required' => 'Tên dang mục không được để trống.',
+            'name.string' => 'Tên danh mục phải là chuỗi.',
+            'name.max' => 'Tên danh mục không vượt quá 255 ký tự.'
         ];
     }
 }

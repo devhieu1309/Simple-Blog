@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreTagFormRequest;
-use App\Http\Requests\UpdateTagFormRequest;
+use App\Http\Requests\Admin\CreateTagRequest;
+use App\Http\Requests\Admin\EditTagRequest;
 use App\Models\Tag;
-use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
@@ -16,10 +15,9 @@ class TagController extends Controller
     public function index()
     {
         $tags = Tag::paginate(8);
-        $data = [
-            'tags' => $tags
-        ];
-        return view('admin.tags.index', $data);
+        return view('admin.tags.index', [
+            'tags' => $tags,
+        ]);
     }
 
     /**
@@ -33,11 +31,10 @@ class TagController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTagFormRequest $request)
+    public function store(CreateTagRequest $request)
     {
-        $tag = $request->all();
-        Tag::create($tag);
-        return redirect()->route('admin.tags.index')->with('success', 'Thêm thẻ mới thành công.');
+        Tag::create($request->validated());
+        return redirect()->route('admin.tags.index')->with('success', 'Thêm tag mới thành công.');
     }
 
     /**
@@ -51,33 +48,29 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Tag $tag)
     {
-        $tag = Tag::find($id);
-        $data = [
+        return view('admin.tags.edit', [
             'tag' => $tag
-        ];
-        return view('admin.tags.edit', $data);
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTagFormRequest $request, string $id)
-    {
-        $data = $request->all();
-        $tag = Tag::find($id);
-        $tag->update($data);
-        return redirect()->route('admin.tags.index')->with('success', 'Cập nhật thẻ thành công.');
+    public function update(EditTagRequest $request, Tag $tag) {
+        $tag->update($request->validatedd());
+        return redirect()->route('admin.tags.index')->with('success', 'Cập nhật tag thành công.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $tag = Tag::find($id);
+    public function destroy(Tag $tag) {
+        foreach($tag->posts as $post){
+            $post->tags()->detach($tag);
+        }
         $tag->delete();
-        return redirect()->route('admin.tags.index')->with('success', 'Xóa thẻ thành công.');
+        return redirect()->route('admin.tags.index')->with('success', 'Xóa tag thành công.');
     }
 }

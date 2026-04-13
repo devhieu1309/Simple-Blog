@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTagFormRequest extends FormRequest
+class CreateTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +23,15 @@ class UpdateTagFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255',
+            'name' => ['required', 'string', 'max:255']
         ];
     }
 
     public function messages() {
         return [
             'name.required' => 'Tên thẻ không được để trống.',
-            'name.max' => 'Tên thẻ không được vượt quá 255 ký tự.'
+            'name.string' => 'Tên thẻ phải là chuỗi.',
+            'name.max' => 'Tên thẻ không vượt quá 255 ký tự.'
         ];
     }
 }

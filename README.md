@@ -28,7 +28,6 @@ Hiện tại hệ thống sử dụng:
 - **Frontend:** Blade, Vite, Tailwind CSS, Alpine.js
 - **Database:** MySQL (theo `.env.example`)
 - **Queue/Cache/Session:** database driver
-- **Testing:** Pest + PHPUnit ecosystem (thông qua `php artisan test`)
 
 ## Requirements
 
@@ -75,14 +74,6 @@ php artisan storage:link
 composer run dev
 ```
 
-### Cách 2: Chạy thủ công từng tiến trình
-
-```bash
-php artisan serve
-php artisan queue:listen --tries=1
-npm run dev
-```
-
 Ứng dụng local mặc định: `http://127.0.0.1:8000` (hoặc URL do Artisan trả về).
 
 ## Environment Configuration (`.env`)
@@ -107,11 +98,6 @@ QUEUE_CONNECTION=database
 FILESYSTEM_DISK=local
 ```
 
-Khuyến nghị production:
-- `APP_ENV=production`
-- `APP_DEBUG=false`
-- Cấu hình `APP_URL` đúng domain
-- Cấu hình mail/queue/cache theo hạ tầng thực tế
 
 ## Folder Structure
 
@@ -209,45 +195,20 @@ Laravel resource routes tương ứng các action:
 
 ### Seeders
 
-`DatabaseSeeder` hiện đang gọi:
-- tạo 1 user mặc định
-- `CategorySeeder` (50 categories)
-- `TagSeeder` (20 tags)
-
-`PostSeeder` và `PostTagSeeder` có sẵn nhưng **chưa được gọi** trong `DatabaseSeeder`.
+`DatabaseSeeder` hiện đang thực hiện:
+- Tạo 1 user mặc định (email `pmhieudev1309@gmail.com`, password `password`)
+- Gọi các seeder:
+  - `UserSeeder` (20 users)
+  - `CategorySeeder` (50 categories)
+  - `TagSeeder` (20 tags)
+  - `PostSeeder` (200 posts)
+  - `PostTagSeeder` (gắn ngẫu nhiên 1-3 tags cho mỗi post)
 
 Chạy seed:
 
 ```bash
 php artisan db:seed
 ```
-
-Nếu muốn có dữ liệu bài viết mẫu, cần bổ sung gọi thêm seeder hoặc chạy riêng:
-
-```bash
-php artisan db:seed --class=PostSeeder
-php artisan db:seed --class=PostTagSeeder
-```
-
-## Build & Deploy
-
-### Build assets
-
-```bash
-npm run build
-```
-
-### Tối ưu cho production (Laravel)
-
-```bash
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-```
-
-### Triển khai production
-
-Thông tin hạ tầng deploy cụ thể (server type, CI/CD pipeline, process manager, queue worker supervisor, Docker) **chưa có trong repository**, cần bổ sung thêm để hoàn thiện tài liệu deploy chính thức.
 
 ## Test Accounts / Sample Data
 
@@ -258,20 +219,3 @@ Tài khoản mặc định từ `DatabaseSeeder`:
 
 > Lưu ý bảo mật: chỉ dùng cho local/dev; cần thay đổi hoặc loại bỏ ở môi trường thật.
 
-## Scripts trong `package.json`
-
-- `npm run dev`: chạy Vite dev server
-- `npm run build`: build assets production
-
-## Scripts trong `composer.json`
-
-- `composer run setup`: cài nhanh toàn bộ dependency + tạo `.env` + migrate + build assets
-- `composer run dev`: chạy đồng thời app server, queue listener, vite
-- `composer run test`: clear config và chạy test suite
-
-## Notes
-
-- File `README.md` trước đó có conflict marker từ Git merge, đã được thay bằng bản tài liệu hoàn chỉnh.
-- Ứng dụng phụ thuộc queue database (`QUEUE_CONNECTION=database`), cần queue worker khi chạy các tác vụ nền.
-- Tính năng upload ảnh yêu cầu chạy `php artisan storage:link`.
-- Một số chi tiết triển khai production chưa có trong repo (CI/CD, Docker, web server config), nên phần deploy cần cập nhật thêm khi chốt môi trường vận hành.

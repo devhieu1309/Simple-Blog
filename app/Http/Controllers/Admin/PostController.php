@@ -90,7 +90,7 @@ class PostController extends Controller
     public function update(EditPostRequest $request, Post $post)
     {
         if ($request->hasFile('image')) {
-            Storage::disk('public')->delete('/pots/' . $post->image);
+            Storage::disk('public')->delete('/posts/' . $post->image);
             $filename = time() . '_' . $request->file('image')->getClientOriginalName();
             $request->file('image')->storeAs('posts', $filename, 'public');
         }

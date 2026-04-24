@@ -59,7 +59,7 @@ class TagController extends Controller
      * Update the specified resource in storage.
      */
     public function update(EditTagRequest $request, Tag $tag) {
-        $tag->update($request->validatedd());
+        $tag->update($request->validated());
         return redirect()->route('admin.tags.index')->with('success', 'Cập nhật tag thành công.');
     }
 

@@ -59,7 +59,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <div class="flex justify-center">
-                                            <img src="{{ asset('storage/' . $post->image) }}" alt="Post thumbnail" class="h-4 w-5 object-cover rounded border border-slate-200 dark:border-slate-700 shadow-sm">
+                                            <img src="{{ asset('storage/posts/' . $post->image) }}" alt="Post thumbnail" class="h-4 w-5 object-cover rounded border border-slate-200 dark:border-slate-700 shadow-sm">
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 space-x-3">

@@ -22,7 +22,7 @@ class PostFactory extends Factory
         return [
             'title' => fake()->sentence(),
             'content' => fake()->paragraph(),
-            'image' => 'posts/esim-nhat-ban-gigago-100x100.jpg',
+            'image' => 'esim-nhat-ban-gigago-100x100.jpg',
             'user_id' => User::inRandomOrder()->value('id'),
             'category_id' => Category::inRandomOrder()->value('id'),
          ];

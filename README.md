@@ -16,8 +16,6 @@ Hiện tại hệ thống sử dụng:
 ## Features
 
 - Public pages: trang chủ, danh sách bài viết, chi tiết bài viết, trang giới thiệu.
-- Authentication: đăng ký, đăng nhập, quên mật khẩu, reset mật khẩu, xác minh email.
-- Profile management: cập nhật thông tin cá nhân, đổi mật khẩu, xóa tài khoản.
 - Admin dashboard: quản lý bài viết (`posts`), danh mục (`categories`), thẻ (`tags`).
 - Upload ảnh bài viết vào `storage/app/public/posts`.
 - Phân trang bài viết ở cả public và admin.
@@ -68,13 +66,11 @@ php artisan storage:link
 
 ## Run Project / Development
 
-### Cách 1: Chạy đồng thời server + queue + vite (khuyên dùng)
+### Chạy đồng thời server + queue + vite (khuyên dùng)
 
 ```bash
 composer run dev
 ```
-
-Ứng dụng local mặc định: `http://127.0.0.1:8000` (hoặc URL do Artisan trả về).
 
 ## Environment Configuration (`.env`)
 
@@ -216,6 +212,4 @@ Tài khoản mặc định từ `DatabaseSeeder`:
 
 - Email: `pmhieudev1309@gmail.com`
 - Password: `password`
-
-> Lưu ý bảo mật: chỉ dùng cho local/dev; cần thay đổi hoặc loại bỏ ở môi trường thật.
 

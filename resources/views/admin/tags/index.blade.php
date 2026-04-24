@@ -28,7 +28,6 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-bold">ID</th>
                                     <th scope="col" class="px-6 py-4 font-bold">Tên thẻ</th>
-                                    <th scope="col" class="px-6 py-4 font-bold text-center">Số lượng bài viết</th>
                                     <th scope="col" class="px-6 py-4 font-bold text-right">Hành động</th>
                                 </tr>
                             </thead>
@@ -39,9 +38,6 @@
                                     <th scope="row" class="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
                                         {{ $tag->name }}
                                     </th>
-                                    <td class="px-6 py-4 text-center">
-                                        <span class="px-2.5 py-0.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-full text-xs font-bold">25</span>
-                                    </td>
                                     <td class="px-6 py-4 text-right space-x-3">
                                         <a href="{{ route('admin.tags.edit', $tag->id) }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Sửa</a>
 

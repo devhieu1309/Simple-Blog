@@ -17,7 +17,7 @@
     {{ $post->content}}
   </p>
 
-  <a href="{{ route('post.show', $post->id) }}" class="group mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600">
+  <a href="{{ route('posts.show', $post->id) }}" class="group mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600">
     Xem chi tiết
     <span aria-hidden="true" class="block transition-all group-hover:ms-0.5 rtl:rotate-180">
       →
@@ -26,7 +26,7 @@
 </article>
 @endforeach
 
-<a href="{{ route('post.index') }}" class="group mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600">
+<a href="{{ route('posts.index') }}" class="group mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600">
   Xem tất cả bài viết
 
   <span aria-hidden="true" class="block transition-all group-hover:ms-0.5 rtl:rotate-180">
